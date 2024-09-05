@@ -1,0 +1,9 @@
+### create an option
+POST http://localhost:3000/options/create
+Content-Type: application/json
+
+{
+  "question_id": "title",
+  "option_text":" test",
+  "is_correct": true
+}

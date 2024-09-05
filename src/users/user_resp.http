@@ -1,0 +1,47 @@
+### Create a new user 
+POST http://localhost:3000/users/create
+Content-Type: application/json
+
+{
+  "username": "test",
+  "email"   : "test@email.com",
+  "password": "123456"
+}
+
+### Update user by id
+PATCH http://localhost:3000/users/44dcfb86-feee-4b5d-8ab3-ec8c6bf4fca2
+Content-Type: application/json
+
+{
+  "username": "test_updated"
+}
+
+###  login to an exisst user
+POST http://localhost:3000/users/signin
+Content-Type: application/json
+
+{
+ "email"   : "admin@example.com",
+  "password": "admin"
+}
+
+###
+POST http://localhost:3000/users/signin
+Content-Type: application/json
+
+{
+  "email"   : "test_7@email.com",
+  "password": "123456" 
+}
+
+### log Out 
+POST http://localhost:3000/users/signout
+
+### Get all users
+GET http://localhost:3000/users
+
+### Get user by username
+GET http://localhost:3000/users/test
+
+### Get Current user
+GET http://localhost:3000/users/current

@@ -1,0 +1,8 @@
+### show the session
+POST http://localhost:3000/quizzes/create
+Content-Type: application/json
+
+{
+  "title": "title",
+  "description":" descriptiondescriptiondescriptiondescriptiondescription"
+}
