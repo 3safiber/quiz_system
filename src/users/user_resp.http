@@ -15,8 +15,10 @@ Content-Type: application/json
 {
   "username": "test_updated"
 }
+### delete user by id
+DELETE http://localhost:3000/users/44dcfb86-feee-4b5d-8ab3-ec8c6bf4fca2
 
-###  login to an exisst user
+###  login to an admin user
 POST http://localhost:3000/users/signin
 Content-Type: application/json
 
@@ -25,7 +27,7 @@ Content-Type: application/json
   "password": "admin"
 }
 
-###
+### login to exist user
 POST http://localhost:3000/users/signin
 Content-Type: application/json
 

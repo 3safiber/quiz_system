@@ -49,16 +49,13 @@ export class UsersController {
   ) {
     return this.usersService.update(id, body, user.id);
   }
-  // @Delete('/:id')
-  // removeUser(@Param('id') id: string) {
-  //   return this.usersService.remove(parseInt(id));
-  // }
-  /**
-   *
-   * @param body
-   * @param session
-   * @returns
-   */
+
+  @Delete('/:id')
+  @UseGuards(AdminGuard)
+  removeUser(@Param('id') id: string) {
+    return this.usersService.remove(id);
+  }
+
   @Post('/signin')
   async signin(@Body() body: CreateUserDto, @Session() session: any) {
     if (session.userId) {

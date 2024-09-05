@@ -47,6 +47,13 @@ export class UsersService {
 
     return user;
   }
+  async remove(id: string) {
+    const user = await this.repo.findOneBy({ id: id });
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    return this.repo.remove(user);
+  }
   find(value: string, field: string = 'id') {
     return this.repo.findOneBy({ [field]: value });
   }
