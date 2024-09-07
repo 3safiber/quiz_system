@@ -5,8 +5,8 @@ import { CreateOptionDto } from './dtos/create-option.dto';
 @Controller('options')
 export class OptionsController {
   constructor(private optionsService: OptionsService) {}
-  @Post('/create')
-  create(@Body() body: CreateOptionDto, @Session() session: any) {
-    return this.optionsService.create(body, session.userId);
-  }
+  // @Post('/create')
+  // create(@Body() body: CreateOptionDto, @Session() session: any) {
+  //   return this.optionsService.create(body, session.userId);
+  // }
 }

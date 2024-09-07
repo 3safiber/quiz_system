@@ -1,3 +1,5 @@
+import { Response } from 'src/responses/response.entity';
+import { Score } from 'src/scores/score.entity';
 import {
   Entity,
   Column,
@@ -7,6 +9,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 export enum Role {
@@ -36,23 +39,29 @@ export class User {
   })
   role: Role;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-  })
+  @OneToMany(() => Response, (response) => response.user_id)
+  responses: Response[];
+
+  @OneToMany(() => User, (user) => user.created_by)
+  createdUsers: User[];
+
+  @OneToMany(() => User, (user) => user.updated_by)
+  updatedUsers: User[];
+
+  @OneToMany(() => Score, (score) => score.quiz_id)
+  scores: Score[];
+
+  @ManyToOne(() => User, (user) => user.createdUsers)
+  @JoinColumn({ name: 'created_by' })
+  created_by: User;
+
+  @ManyToOne(() => User, (user) => user.updatedUsers)
+  @JoinColumn({ name: 'updated_by' })
+  updated_by: User;
+
+  @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'created_by' })
-  @Column('uuid', { nullable: true })
-  created_by: string;
-
-  @UpdateDateColumn({
-    type: 'timestamp',
-  })
+  @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
-
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'updated_by' })
-  @Column('uuid', { nullable: true })
-  updated_by: string;
 }

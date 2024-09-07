@@ -16,15 +16,11 @@ export class Score {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, { nullable: false })
-  @JoinColumn({ name: 'user_id' })
-  @Column('uuid', { nullable: false })
-  user_id: string;
+  @ManyToOne(() => User, (user) => user.scores)
+  user_id: User;
 
-  @ManyToOne(() => Quiz, { nullable: false })
-  @JoinColumn({ name: 'quiz_id' })
-  @Column('uuid', { nullable: false })
-  quiz_id: string;
+  @ManyToOne(() => Quiz, (quiz) => quiz.scores)
+  quiz_id: Quiz;
 
   @Column('int')
   score: number;
@@ -36,23 +32,18 @@ export class Score {
    *  columns.
    *
    */
-  @CreateDateColumn({
-    type: 'timestamp',
-  })
+
+  @ManyToOne(() => User, (user) => user.createdUsers)
+  @JoinColumn({ name: 'created_by' })
+  created_by: User;
+
+  @ManyToOne(() => User, (user) => user.updatedUsers)
+  @JoinColumn({ name: 'updated_by' })
+  updated_by: User;
+
+  @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'created_by' })
-  @Column('uuid', { nullable: true })
-  created_by: string;
-
-  @UpdateDateColumn({
-    type: 'timestamp',
-  })
+  @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
-
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'updated_by' })
-  @Column('uuid', { nullable: true })
-  updated_by: string;
 }

@@ -15,7 +15,7 @@ const scrypt = promisify(_scrypt);
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
-  async create(data: CreateUserDto, id: string) {
+  async create(data: CreateUserDto, createdUser: User) {
     const { email, password, role, username } = data;
     if (Role[role as keyof typeof Role]) {
       throw new BadRequestException('Invalid role');
@@ -25,12 +25,12 @@ export class UsersService {
       password: password,
       role: Role[role as keyof typeof Role],
       username: username,
-      created_by: id,
-      updated_by: id,
+      created_by: createdUser,
+      updated_by: createdUser,
     });
     return this.repo.save(user);
   }
-  async update(id_to_update: string, data: UpdateUserDto, id: string) {
+  async update(id_to_update: string, data: UpdateUserDto, updated_user: User) {
     const { email, password, role, username } = data;
     const user = await this.repo.findOneBy({ id: id_to_update });
     if (!user) {
@@ -41,7 +41,7 @@ export class UsersService {
     user.password = password ?? user.password;
     user.role = Role[role as keyof typeof Role] ?? user.role;
     user.username = username ?? user.username;
-    user.updated_by = id;
+    user.updated_by = updated_user;
 
     await this.repo.save(user);
 

@@ -1,4 +1,5 @@
 import { Question } from 'src/questions/question.entity';
+import { Response } from 'src/responses/response.entity';
 import { User } from 'src/users/user.entity';
 import {
   Entity,
@@ -8,6 +9,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('options')
@@ -15,10 +17,8 @@ export class Option {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Question, { nullable: false })
-  @JoinColumn({ name: 'question_id' })
-  @Column('uuid', { nullable: false })
-  question_id: string;
+  @ManyToOne(() => Question, (question) => question.options)
+  question_id: Question;
 
   @Column('varchar')
   option_text: string;
@@ -26,30 +26,20 @@ export class Option {
   @Column('boolean')
   is_correct: boolean;
 
-  /***
-   *
-   *  for all table we use created at ,
-   *  created by, updated at ,updated by
-   *  columns.
-   *
-   */
-  @CreateDateColumn({
-    type: 'timestamp',
-  })
+  @OneToMany(() => Response, (response) => response.selected_option_id)
+  responses: Response[];
+
+  @ManyToOne(() => User, (user) => user.createdUsers)
+  @JoinColumn({ name: 'created_by' })
+  created_by: User;
+
+  @ManyToOne(() => User, (user) => user.updatedUsers)
+  @JoinColumn({ name: 'updated_by' })
+  updated_by: User;
+
+  @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'created_by' })
-  @Column('uuid', { nullable: true })
-  created_by: string;
-
-  @UpdateDateColumn({
-    type: 'timestamp',
-  })
+  @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
-
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'updated_by' })
-  @Column('uuid', { nullable: true })
-  updated_by: string;
 }

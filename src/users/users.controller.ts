@@ -36,30 +36,20 @@ export class UsersController {
   @Post('/create')
   @UseGuards(AdminGuard)
   async create(@Body() body: CreateUserDto, @CurrentUser() user: User) {
-    const newUser = await this.usersService.create(body, user.id);
+    const newUser = await this.authService.signup(body, user);
     return newUser;
-  }
-
-  @Patch('/:id')
-  @UseGuards(AdminGuard)
-  updateUser(
-    @Param('id') id: string,
-    @Body() body: UpdateUserDto,
-    @CurrentUser() user: User,
-  ) {
-    return this.usersService.update(id, body, user.id);
-  }
-
-  @Delete('/:id')
-  @UseGuards(AdminGuard)
-  removeUser(@Param('id') id: string) {
-    return this.usersService.remove(id);
   }
 
   @Post('/signin')
   async signin(@Body() body: CreateUserDto, @Session() session: any) {
+    console.log(body);
+    console.log(session);
     if (session.userId) {
       const user = this.usersService.find(session.userId);
+      if (!user) {
+        session.userId = null;
+        return;
+      }
       return user;
     }
     const user = await this.authService.signin(body.email, body.password);
@@ -75,6 +65,22 @@ export class UsersController {
   @Get('/current')
   async current_user(@CurrentUser() user: User) {
     return user ?? 'There is no user currently logged in!';
+  }
+
+  @Patch('/:id')
+  @UseGuards(AdminGuard)
+  updateUser(
+    @Param('id') id: string,
+    @Body() body: UpdateUserDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.usersService.update(id, body, user);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AdminGuard)
+  removeUser(@Param('id') id: string) {
+    return this.usersService.remove(id);
   }
 
   @Get('/:username')

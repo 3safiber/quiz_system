@@ -17,50 +17,29 @@ export class Response {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, { nullable: false })
-  @JoinColumn({ name: 'user_id' })
-  @Column('uuid', { nullable: false })
-  user_id: string;
+  @ManyToOne(() => User, (user) => user.responses)
+  user_id: User;
 
-  @ManyToOne(() => Quiz, { nullable: false })
-  @JoinColumn({ name: 'quiz_id' })
-  @Column('uuid', { nullable: false })
-  quiz_id: string;
+  @ManyToOne(() => Quiz, (quiz) => quiz.responses)
+  quiz_id: Quiz;
 
-  @ManyToOne(() => Question, { nullable: false })
-  @JoinColumn({ name: 'question_id' })
-  @Column('uuid', { nullable: false })
-  question_id: string;
+  @ManyToOne(() => Question, (question) => question.responses)
+  question_id: Question;
 
-  @ManyToOne(() => Option, { nullable: false })
-  @JoinColumn({ name: 'selected_option_id' })
-  @Column('uuid', { nullable: false })
-  selected_option_id: string;
+  @ManyToOne(() => Option, (option) => option.responses)
+  selected_option_id: Option;
 
-  /***
-   *
-   *  for all table we use created at ,
-   *  created by, updated at ,updated by
-   *  columns.
-   *
-   */
-  @CreateDateColumn({
-    type: 'timestamp',
-  })
+  @ManyToOne(() => User, (user) => user.createdUsers)
+  @JoinColumn({ name: 'created_by' })
+  created_by: User;
+
+  @ManyToOne(() => User, (user) => user.updatedUsers)
+  @JoinColumn({ name: 'updated_by' })
+  updated_by: User;
+
+  @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'created_by' })
-  @Column('uuid', { nullable: true })
-  created_by: string;
-
-  @UpdateDateColumn({
-    type: 'timestamp',
-  })
+  @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
-
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'updated_by' })
-  @Column('uuid', { nullable: true })
-  updated_by: string;
 }

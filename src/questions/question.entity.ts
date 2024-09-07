@@ -1,5 +1,8 @@
+import { Option } from 'src/options/option.entity';
 import { Quiz } from 'src/quizzes/quiz.entity';
+import { Response } from 'src/responses/response.entity';
 import { User } from 'src/users/user.entity';
+
 import {
   Entity,
   Column,
@@ -8,6 +11,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 export enum Type {
@@ -20,10 +24,8 @@ export class Question {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Quiz, { nullable: false })
-  @JoinColumn({ name: 'quiz_id' })
-  @Column('uuid', { nullable: false })
-  quiz_id: string;
+  @ManyToOne(() => Quiz, (quiz) => quiz.questions)
+  quiz_id: Quiz;
 
   @Column('text')
   question_text: string;
@@ -34,30 +36,23 @@ export class Question {
   })
   question_type: Type;
 
-  /***
-   *
-   *  for all table we use created at ,
-   *  created by, updated at ,updated by
-   *  columns.
-   *
-   */
-  @CreateDateColumn({
-    type: 'timestamp',
-  })
+  @OneToMany(() => Option, (option) => option.question_id)
+  options: Option[];
+
+  @OneToMany(() => Response, (response) => response.question_id)
+  responses: Response[];
+
+  @ManyToOne(() => User, (user) => user.createdUsers)
+  @JoinColumn({ name: 'created_by' })
+  created_by: User;
+
+  @ManyToOne(() => User, (user) => user.updatedUsers)
+  @JoinColumn({ name: 'updated_by' })
+  updated_by: User;
+
+  @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'created_by' })
-  @Column('uuid', { nullable: true })
-  created_by: string;
-
-  @UpdateDateColumn({
-    type: 'timestamp',
-  })
+  @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
-
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'updated_by' })
-  @Column('uuid', { nullable: true })
-  updated_by: string;
 }
