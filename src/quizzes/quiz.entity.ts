@@ -25,16 +25,16 @@ export class Quiz {
   @Column('text')
   description: string;
 
-  @OneToMany(() => Question, (question) => question.quiz_id)
+  @OneToMany(() => Question, (question) => question.quiz_id, { cascade: true })
   questions: Question[];
 
-  @OneToMany(() => Response, (response) => response.quiz_id)
+  @OneToMany(() => Response, (response) => response.quiz_id, { cascade: true })
   responses: Response[];
 
-  @OneToMany(() => Score, (score) => score.quiz_id)
+  @OneToMany(() => Score, (score) => score.quiz_id, { cascade: true })
   scores: Score[];
 
-  @ManyToOne(() => User, (user) => user.createdUsers)
+  @ManyToOne(() => User, (user) => user.createdUsers , { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'created_by' })
   created_by: User;
 

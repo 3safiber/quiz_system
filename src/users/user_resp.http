@@ -9,11 +9,12 @@ Content-Type: application/json
 }
 
 ### Update user by id
-PATCH http://localhost:3000/users/44dcfb86-feee-4b5d-8ab3-ec8c6bf4fca2
+PATCH http://localhost:3000/users/5f5da7ae-b592-4b12-a79a-e4787d49828f
 Content-Type: application/json
 
 {
-  "username": "test_updated"
+  "username": "test_updated_2",
+  "password": "start"
 }
 ### delete user by id
 DELETE http://localhost:3000/users/44dcfb86-feee-4b5d-8ab3-ec8c6bf4fca2

@@ -16,10 +16,10 @@ export class Score {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (user) => user.scores)
+  @ManyToOne(() => User, (user) => user.scores, { onDelete: 'CASCADE' })
   user_id: User;
 
-  @ManyToOne(() => Quiz, (quiz) => quiz.scores)
+  @ManyToOne(() => Quiz, (quiz) => quiz.scores, { onDelete: 'CASCADE' })
   quiz_id: Quiz;
 
   @Column('int')
@@ -33,7 +33,7 @@ export class Score {
    *
    */
 
-  @ManyToOne(() => User, (user) => user.createdUsers)
+  @ManyToOne(() => User, (user) => user.createdUsers, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'created_by' })
   created_by: User;
 

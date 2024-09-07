@@ -24,7 +24,8 @@ export class Question {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Quiz, (quiz) => quiz.questions)
+  @ManyToOne(() => Quiz, (quiz) => quiz.questions, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'quiz_id' })
   quiz_id: Quiz;
 
   @Column('text')
@@ -36,13 +37,15 @@ export class Question {
   })
   question_type: Type;
 
-  @OneToMany(() => Option, (option) => option.question_id)
+  @OneToMany(() => Option, (option) => option.question_id, { cascade: true })
   options: Option[];
 
-  @OneToMany(() => Response, (response) => response.question_id)
+  @OneToMany(() => Response, (response) => response.question_id, {
+    cascade: true,
+  })
   responses: Response[];
 
-  @ManyToOne(() => User, (user) => user.createdUsers)
+  @ManyToOne(() => User, (user) => user.createdUsers, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'created_by' })
   created_by: User;
 

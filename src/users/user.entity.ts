@@ -39,19 +39,19 @@ export class User {
   })
   role: Role;
 
-  @OneToMany(() => Response, (response) => response.user_id)
+  @OneToMany(() => Response, (response) => response.user_id, { cascade: true })
   responses: Response[];
 
-  @OneToMany(() => User, (user) => user.created_by)
+  @OneToMany(() => Score, (score) => score.quiz_id, { cascade: true })
+  scores: Score[];
+
+  @OneToMany(() => User, (user) => user.created_by, { cascade: true })
   createdUsers: User[];
 
   @OneToMany(() => User, (user) => user.updated_by)
   updatedUsers: User[];
 
-  @OneToMany(() => Score, (score) => score.quiz_id)
-  scores: Score[];
-
-  @ManyToOne(() => User, (user) => user.createdUsers)
+  @ManyToOne(() => User, (user) => user.createdUsers, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'created_by' })
   created_by: User;
 

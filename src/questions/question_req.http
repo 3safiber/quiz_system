@@ -1,0 +1,23 @@
+### create new question
+POST http://localhost:3000/questions/create
+Content-Type: application/json
+
+{
+  "quiz_id":"ffe44588-dc20-4a0c-ba27-c1feeb4aa2b9",
+  "question_text": "Question 2",
+  "question_type":"true_false"
+}
+
+### Fetch all question for existing quiz id
+GET http://localhost:3000/questions/ffe44588-dc20-4a0c-ba27-c1feeb4aa2b9
+
+### Update question by id
+PATCH http://localhost:3000/questions/bb1549b6-1dca-4af3-b296-ecd5de15d75c
+Content-Type: application/json
+
+{
+  "question_text": "what is your faveret color!?"
+}
+
+### Delete quize by id
+DELETE http://localhost:3000/questions/bd43e719-8c82-42bf-938c-8d7ad8d113ab

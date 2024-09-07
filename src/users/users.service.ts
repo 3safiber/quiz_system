@@ -36,13 +36,34 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-
-    user.email = email ?? user.email;
-    user.password = password ?? user.password;
-    user.role = Role[role as keyof typeof Role] ?? user.role;
-    user.username = username ?? user.username;
+    if (role) {
+      const checkedRole = Role[role as keyof typeof Role];
+      if (!checkedRole) {
+        throw new BadRequestException('Invalid role');
+      }
+      user.role = checkedRole;
+    }
+    if (password) {
+      const salt = randomBytes(8).toString('hex');
+      const hash = (await scrypt(password, salt, 32)) as Buffer;
+      const result = salt + '.' + hash.toString('hex');
+      user.password = result;
+    }
+    if (username) {
+      const existingUserByUsername = await this.find(username, 'username');
+      if (existingUserByUsername) {
+        throw new BadRequestException('username already used!');
+      }
+      user.username = username;
+    }
+    if (email) {
+      const existingUserByEmail = await this.find(email, 'email');
+      if (existingUserByEmail) {
+        throw new BadRequestException('email already used!');
+      }
+      user.email = email;
+    }
     user.updated_by = updated_user;
-
     await this.repo.save(user);
 
     return user;

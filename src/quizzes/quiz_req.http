@@ -1,4 +1,4 @@
-### show the session
+### create new Quiz
 POST http://localhost:3000/quizzes/create
 Content-Type: application/json
 
@@ -6,3 +6,17 @@ Content-Type: application/json
   "title": "title",
   "description":" descriptiondescriptiondescriptiondescriptiondescription"
 }
+
+### Fetch all quizzes
+GET http://localhost:3000/quizzes
+
+### Update quize by id
+PATCH http://localhost:3000/quizzes/1a97f37a-9f78-4c77-bfcb-89484b24b0dc
+Content-Type: application/json
+
+{
+  "title": "sec_update"
+}
+
+### Delete quize by id
+DELETE http://localhost:3000/quizzes/1a97f37a-9f78-4c77-bfcb-89484b24b0dc

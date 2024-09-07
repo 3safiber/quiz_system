@@ -17,7 +17,10 @@ export class Option {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Question, (question) => question.options)
+  @ManyToOne(() => Question, (question) => question.options, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'question_id' })
   question_id: Question;
 
   @Column('varchar')
@@ -26,10 +29,12 @@ export class Option {
   @Column('boolean')
   is_correct: boolean;
 
-  @OneToMany(() => Response, (response) => response.selected_option_id)
+  @OneToMany(() => Response, (response) => response.selected_option_id, {
+    cascade: true,
+  })
   responses: Response[];
 
-  @ManyToOne(() => User, (user) => user.createdUsers)
+  @ManyToOne(() => User, (user) => user.createdUsers, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'created_by' })
   created_by: User;
 
