@@ -47,13 +47,14 @@ export class QuestionsService {
 
   fetchQuizQuestions(id: string) {
     return this.repo.find({
-      where: { quiz_id: { id: id } }, // Adjust this based on your entity relationship
+      where: { quiz_id: { id: id } },
+      relations: ['quiz_id', 'created_by', 'updated_by'],
     });
   }
 
   async update(id: string, data: UpdateQuestionDto, user: User) {
     const { question_text, question_type } = data;
-    const question = await this.repo.findOneBy({ id: id });
+    const question = await this.find(id);
     let type: Type;
     if (question_type) {
       type = Type[question_type as keyof typeof Type];
@@ -73,10 +74,17 @@ export class QuestionsService {
     return question;
   }
   async delete(id: string) {
-    const question = await this.repo.findOneBy({ id: id });
+    const question = await this.find(id);
     if (!question) {
       throw new NotFoundException('quiz not found');
     }
     return this.repo.remove(question);
+  }
+  find(value: string, field: string = 'id', options?: any) {
+    return this.repo.findOne({
+      where: { [field]: value },
+      relations: ['quiz_id', 'created_by', 'updated_by'],
+      ...options,
+    });
   }
 }

@@ -1,13 +1,13 @@
 import { IsBoolean, IsString } from 'class-validator';
 import { Question } from 'src/questions/question.entity';
 
-export class CreateOptionDto {
+export class CreateResponseDto {
+  @IsString()
+  quiz_id: string;
+
   @IsString()
   question_id: string;
 
   @IsString()
-  option_text: string;
-
-  @IsBoolean()
-  is_correct: boolean;
+  selected_option_id: string;
 }

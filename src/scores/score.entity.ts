@@ -1,4 +1,3 @@
-import { Question } from 'src/questions/question.entity';
 import { Quiz } from 'src/quizzes/quiz.entity';
 import { User } from 'src/users/user.entity';
 import {
@@ -9,31 +8,27 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  Unique,
 } from 'typeorm';
 
 @Entity('scores')
+@Unique(['user_id', 'quiz_id'])
 export class Score {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => User, (user) => user.scores, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
   user_id: User;
 
   @ManyToOne(() => Quiz, (quiz) => quiz.scores, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'quiz_id' })
   quiz_id: Quiz;
 
   @Column('int')
   score: number;
 
-  /***
-   *
-   *  for all table we use created at ,
-   *  created by, updated at ,updated by
-   *  columns.
-   *
-   */
-
-  @ManyToOne(() => User, (user) => user.createdUsers, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.createdUsers)
   @JoinColumn({ name: 'created_by' })
   created_by: User;
 

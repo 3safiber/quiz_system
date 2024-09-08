@@ -9,6 +9,6 @@ import { QuizzesModule } from 'src/quizzes/quizzes.module';
   imports: [TypeOrmModule.forFeature([Question]), QuizzesModule],
   controllers: [QuestionsController],
   providers: [QuestionsService],
-  
+  exports: [QuestionsService],
 })
 export class QuestionsModule {}

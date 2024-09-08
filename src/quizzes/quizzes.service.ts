@@ -19,16 +19,19 @@ export class QuizzesService {
     });
     return this.repo.save(quiz);
   }
-  find(value: string, field: string = 'id') {
-    console.log(value);
-    return this.repo.findOneBy({ [field]: value });
+  find(value: string, field: string = 'id', options?: any) {
+    return this.repo.findOne({
+      where: { [field]: value },
+      relations: ['created_by', 'updated_by'],
+      ...options,
+    });
   }
   fetchAll() {
-    return this.repo.find();
+    return this.repo.find({ relations: ['created_by', 'updated_by'] });
   }
   async update(id: string, data: UpdateQuizDto, user: User) {
     const { title, description } = data;
-    const quiz = await this.repo.findOneBy({ id: id });
+    const quiz = await this.find(id);
     if (!quiz) {
       throw new NotFoundException('Quiz not found');
     }
@@ -39,7 +42,7 @@ export class QuizzesService {
     return quiz;
   }
   async delete(id: string) {
-    const quiz = await this.repo.findOneBy({ id: id });
+    const quiz = await this.find(id);
     if (!quiz) {
       throw new NotFoundException('quiz not found');
     }

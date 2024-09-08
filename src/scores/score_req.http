@@ -1,0 +1,21 @@
+### create an option
+POST http://localhost:3000/scores/create
+Content-Type: application/json
+
+{
+  "user_id": "6cb0cda2-be0a-48fc-a9ef-428af49c9f3e",
+  "quiz_id":"a60200b2-2e19-4f5f-b64f-ededda7a27fe"
+}
+
+### update an existing option
+PATCH http://localhost:3000/scores/97c779d9-da3d-4f91-830e-bf9f8cf2f186
+Content-Type: application/json
+
+{
+  "score":75
+}
+
+### Delete an existing option
+DELETE http://localhost:3000/scores/97c779d9-da3d-4f91-830e-bf9f8cf2f186
+### Fetch all options
+GET  http://localhost:3000/scores

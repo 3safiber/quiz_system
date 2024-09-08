@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -20,6 +19,7 @@ import { UserDto } from './dtos/user.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './user.entity';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { SigninUserDto } from './dtos/signin-user.dto';
 
 @Controller('users')
 @Serialize(UserDto)
@@ -41,16 +41,13 @@ export class UsersController {
   }
 
   @Post('/signin')
-  async signin(@Body() body: CreateUserDto, @Session() session: any) {
-    console.log(body);
-    console.log(session);
+  async signin(@Body() body: SigninUserDto, @Session() session: any) {
     if (session.userId) {
-      const user = this.usersService.find(session.userId);
-      if (!user) {
-        session.userId = null;
-        return;
+      const user = await this.usersService.find(session.userId);
+      if (user) {
+        return `You are already sign in with username: ${user.username}.`;
       }
-      return user;
+      session.userId = null;
     }
     const user = await this.authService.signin(body.email, body.password);
     session.userId = user.id;

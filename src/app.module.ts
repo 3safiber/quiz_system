@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -15,6 +15,7 @@ import { Score } from './scores/score.entity';
 import { Response } from './responses/response.entity';
 import { Option } from './options/option.entity';
 import { Question } from './questions/question.entity';
+import { APP_PIPE } from '@nestjs/core';
 const cookieSession = require('cookie-session');
 
 @Module({
@@ -45,7 +46,15 @@ const cookieSession = require('cookie-session');
     ScoresModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        whitelist: true,
+      }),
+    },
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

@@ -3,14 +3,13 @@ POST http://localhost:3000/questions/create
 Content-Type: application/json
 
 {
-  "quiz_id":"ffe44588-dc20-4a0c-ba27-c1feeb4aa2b9",
-  "question_text": "Question 2",
-  "question_type":"true_false"
+  "quiz_id":"a60200b2-2e19-4f5f-b64f-ededda7a27fe",
+  "question_text": "Quiz_1_Question_5",
+  "question_type":"multiple_choice"
 }
 
 ### Fetch all question for existing quiz id
-GET http://localhost:3000/questions/ffe44588-dc20-4a0c-ba27-c1feeb4aa2b9
-
+GET http://localhost:3000/questions/a60200b2-2e19-4f5f-b64f-ededda7a27fe
 ### Update question by id
 PATCH http://localhost:3000/questions/bb1549b6-1dca-4af3-b296-ecd5de15d75c
 Content-Type: application/json
@@ -19,5 +18,5 @@ Content-Type: application/json
   "question_text": "what is your faveret color!?"
 }
 
-### Delete quize by id
-DELETE http://localhost:3000/questions/bd43e719-8c82-42bf-938c-8d7ad8d113ab
+### Delete quiz by id
+DELETE http://localhost:3000/questions/bb56ca17-8b53-4069-9f88-b4642e206145

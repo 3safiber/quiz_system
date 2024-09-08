@@ -32,7 +32,7 @@ export class UsersService {
   }
   async update(id_to_update: string, data: UpdateUserDto, updated_user: User) {
     const { email, password, role, username } = data;
-    const user = await this.repo.findOneBy({ id: id_to_update });
+    const user = await this.find(id_to_update);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -69,22 +69,23 @@ export class UsersService {
     return user;
   }
   async remove(id: string) {
-    const user = await this.repo.findOneBy({ id: id });
+    const user = await this.find(id);
     if (!user) {
       throw new NotFoundException('user not found');
     }
     return this.repo.remove(user);
   }
   find(value: string, field: string = 'id') {
-    return this.repo.findOneBy({ [field]: value });
+    return this.repo.findOne({
+      where: { [field]: value },
+      relations: ['created_by', 'updated_by'],
+    });
   }
   fetchAll() {
     return this.repo.find();
   }
   async initializeAdminUser() {
-    const existingAdmin = await this.repo.findOne({
-      where: { role: Role.admin },
-    });
+    const existingAdmin = await this.find(Role.admin, 'role');
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt('admin', salt, 32)) as Buffer;
     const hashedPassword = salt + '.' + hash.toString('hex');

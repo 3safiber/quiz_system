@@ -1,14 +1,17 @@
 import { Expose, Transform } from 'class-transformer';
-
-export class QuizDto {
+export class OptionDto {
   @Expose()
   id: string;
 
+  @Transform(({ obj }) => obj.question_id.id)
   @Expose()
-  title: string;
+  question_id: string;
 
   @Expose()
-  description: string;
+  option_text: string;
+
+  @Expose()
+  is_correct: boolean;
 
   @Transform(({ obj }) => obj.created_by?.id)
   @Expose()
@@ -17,10 +20,4 @@ export class QuizDto {
   @Transform(({ obj }) => obj.updated_by?.id)
   @Expose()
   updated_by: string;
-
-  @Expose()
-  created_at: Date;
-
-  @Expose()
-  updated_at: Date;
 }

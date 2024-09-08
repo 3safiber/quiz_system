@@ -51,7 +51,7 @@ export class User {
   @OneToMany(() => User, (user) => user.updated_by)
   updatedUsers: User[];
 
-  @ManyToOne(() => User, (user) => user.createdUsers, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.createdUsers)
   @JoinColumn({ name: 'created_by' })
   created_by: User;
 

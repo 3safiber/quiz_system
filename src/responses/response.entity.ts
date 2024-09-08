@@ -10,30 +10,36 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  Unique,
 } from 'typeorm';
 
+@Unique(['user_id', 'quiz_id', 'question_id'])
 @Entity('responses')
 export class Response {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => User, (user) => user.responses, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
   user_id: User;
 
   @ManyToOne(() => Quiz, (quiz) => quiz.responses, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'quiz_id' })
   quiz_id: Quiz;
 
   @ManyToOne(() => Question, (question) => question.responses, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'question_id' })
   question_id: Question;
 
   @ManyToOne(() => Option, (option) => option.responses, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'selected_option_id' })
   selected_option_id: Option;
 
-  @ManyToOne(() => User, (user) => user.createdUsers, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.createdUsers)
   @JoinColumn({ name: 'created_by' })
   created_by: User;
 

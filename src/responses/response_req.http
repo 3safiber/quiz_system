@@ -1,0 +1,29 @@
+### create an response
+POST http://localhost:3000/responses/create
+Content-Type: application/json
+
+{
+  "quiz_id": "a60200b2-2e19-4f5f-b64f-ededda7a27fe",
+  "question_id": "3b4885e4-1401-4b99-b7bb-5ca941814b14",
+  "selected_option_id": "72a675f3-2667-454a-b413-c37828db3569"
+}
+
+### update an existing response
+PATCH http://localhost:3000/responses/5c09ba68-c2b4-4917-9dec-37902c088f15
+Content-Type: application/json
+
+{
+  "selected_option_id":"b800abc9-099c-4865-9a27-343f2c4add8e"
+}
+
+### Delete an existing response
+DELETE http://localhost:3000/responses/7373698a-c703-4889-835a-4aadb3d7f5df
+
+### Fetch all responses
+GET  http://localhost:3000/responses
+
+###
+
+f58fa11a-7f53-44fa-b5e4-b7d2f9422d3d
+0bf788dd-a977-4417-8ac8-d22babc3a8ad
+0b45b613-85e7-4bd6-86e2-8db88d09e907

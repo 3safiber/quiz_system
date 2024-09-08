@@ -3,8 +3,8 @@ POST http://localhost:3000/quizzes/create
 Content-Type: application/json
 
 {
-  "title": "title",
-  "description":" descriptiondescriptiondescriptiondescriptiondescription"
+  "title": "Quiz 1",
+  "description":" To test score service"
 }
 
 ### Fetch all quizzes
