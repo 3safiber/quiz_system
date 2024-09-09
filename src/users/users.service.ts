@@ -84,21 +84,4 @@ export class UsersService {
   fetchAll() {
     return this.repo.find();
   }
-  async initializeAdminUser() {
-    const existingAdmin = await this.find(Role.admin, 'role');
-    const salt = randomBytes(8).toString('hex');
-    const hash = (await scrypt('admin', salt, 32)) as Buffer;
-    const hashedPassword = salt + '.' + hash.toString('hex');
-
-    if (!existingAdmin) {
-      const adminUser = this.repo.create({
-        username: 'admin',
-        email: 'admin@example.com',
-        password: hashedPassword,
-        role: Role.admin,
-      });
-
-      await this.repo.save(adminUser);
-    }
-  }
 }

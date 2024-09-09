@@ -16,6 +16,7 @@ import { Response } from './responses/response.entity';
 import { Option } from './options/option.entity';
 import { Question } from './questions/question.entity';
 import { APP_PIPE } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
 const cookieSession = require('cookie-session');
 
 @Module({
@@ -44,6 +45,7 @@ const cookieSession = require('cookie-session');
     OptionsModule,
     ResponsesModule,
     ScoresModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

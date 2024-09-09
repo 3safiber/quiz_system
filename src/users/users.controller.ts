@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  Session,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -17,9 +16,10 @@ import { AdminGuard } from 'src/guards/admin.guard';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { User } from './user.entity';
+import { Role, User } from './user.entity';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { SigninUserDto } from './dtos/signin-user.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+// import { SigninUserDto } from './dtos/signin-user.dto';
 
 @Controller('users')
 @Serialize(UserDto)
@@ -29,35 +29,23 @@ export class UsersController {
     private authService: AuthService,
   ) {}
   @Get()
-  findAll(@Session() session: any) {
+  @UseGuards(JwtAuthGuard)
+  findAll() {
     return this.usersService.fetchAll();
   }
 
   @Post('/create')
   @UseGuards(AdminGuard)
   async create(@Body() body: CreateUserDto, @CurrentUser() user: User) {
+    if (user.role != Role.admin) {
+      throw new Error('');
+    }
     const newUser = await this.authService.signup(body, user);
     return newUser;
   }
 
-  @Post('/signin')
-  async signin(@Body() body: SigninUserDto, @Session() session: any) {
-    if (session.userId) {
-      const user = await this.usersService.find(session.userId);
-      if (user) {
-        return `You are already sign in with username: ${user.username}.`;
-      }
-      session.userId = null;
-    }
-    const user = await this.authService.signin(body.email, body.password);
-    session.userId = user.id;
-    return user;
-  }
-
   @Post('/signout')
-  signout(@Session() session: any) {
-    session.userId = null;
-  }
+  signout() {}
 
   @Get('/current')
   async current_user(@CurrentUser() user: User) {
